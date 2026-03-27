@@ -1,123 +1,117 @@
-# Phishing Email Analysis Report
+# Phishing Analysis Report — atendimento-fluxo-online.shop
 
 **Report ID:** PHI-001  
+**Submission ID:** PhishTank #9377269  
 **Severity:** High  
-**Category:** Phishing  
+**Category:** Phishing — Credential Harvesting  
 **Analyst:** Michael Eziuzor  
-**Date:** March 2026  
-**Platform:** LetsDefend  
+**Date:** March 27, 2026  
+**Source:** PhishTank  
 
 ---
 
 ## 1. Overview
 
-This report documents the analysis of a suspicious phishing email reported 
-by an internal user. The investigation follows standard SOC phishing analysis 
-methodology including email header inspection, URL reputation analysis, 
-attachment analysis, and threat intelligence lookups.
+This report documents the analysis of a live phishing site submitted to 
+PhishTank on March 27, 2026. The site targets Portuguese-speaking users, 
+specifically impersonating a Brazilian government or official service portal. 
+The investigation covers URL analysis, threat intelligence lookups, 
+infrastructure analysis, and detection findings.
 
 ---
 
-## 2. Email Details
+## 2. Phishing Site Details
 
-- **Sender (Display Name):** Microsoft Security Team
-- **Sender (Actual Address):** security-alert@microsft-verify.com
-- **Reply-To:** harvester@malicious-domain.ru
-- **Subject:** Urgent: Your Microsoft Account Has Been Compromised
-- **Date Received:** February 14, 2024, 09:23 AM
-- **Recipient:** internal.user@company.com
-
----
-
-## 3. Header Analysis
-
-Email header inspection revealed the following anomalies:
-
-- **SPF:** FAIL — sending server not authorised for domain
-- **DKIM:** FAIL — signature invalid
-- **DMARC:** FAIL — message did not pass DMARC policy
-- **Originating IP:** 185.220.101.45
-- **Mail Server:** smtp.malicious-domain.ru
-- **Spoofed Domain:** microsft-verify.com (typosquat of microsoft.com)
-
-All three email authentication checks failed, confirming the email 
-did not originate from a legitimate Microsoft server.
+- **Phishing URL:** hxxps://atendimento-fluxo-online[.]shop/
+- **Status:** Live (HTTP 200) at time of analysis
+- **Page Title:** Efetuar Análise (Portuguese: "Perform Analysis")
+- **Target:** Brazilian users — impersonates official government/service portal
+- **Submitted to PhishTank:** March 27, 2026 at 15:27 UTC
+- **Server:** Apache
+- **Content Type:** text/html
 
 ---
 
-## 4. Threat Intelligence
+## 3. Threat Intelligence
 
-**VirusTotal — 185.220.101.45**
-- Flagged as malicious by 18 vendors
-- Associated with phishing and credential harvesting campaigns
+**VirusTotal — atendimento-fluxo-online.shop**
+- 1/95 security vendors flagged as malicious
+- Vendor detection: ESET — Phishing
+- First submitted: March 27, 2026
+- Body SHA-256: 368c5c189352af9f0c18f69d0a0a69c65a0876749d9014c180020b2ce6805104
 
-**AbuseIPDB — 185.220.101.45**
-- 12,847 abuse reports
-- Categorised as phishing and spam infrastructure
-
-**URLScan.io — microsft-verify.com**
-- Domain registered 3 days prior to email delivery
-- Page mimics Microsoft account login portal
-- Designed to harvest credentials
-
----
-
-## 5. URL and Link Analysis
-
-The email contained a single call-to-action button linking to:
-
-`hxxp://microsft-verify.com/account/verify?token=a8f3k2`
-
-- Domain is a typosquat of microsoft.com
-- Newly registered domain (3 days old at time of delivery)
-- Page renders a fake Microsoft login portal
-- Form submits credentials to attacker-controlled backend
+**AbuseIPDB — 88.80.17.168**
+- No prior abuse reports — newly deployed infrastructure
+- ISP: PRQ Dynamic VPN network
+- Usage Type: Data Center / Web Hosting / Transit
+- Country: Sweden, Stockholm
+- Hostname: portal-oficial-bombeiros-edital.shop
 
 ---
 
-## 6. Attachment Analysis
+## 4. Infrastructure Analysis
 
-No attachment was present in this email. The attack vector was 
-exclusively link-based credential harvesting.
+The phishing site is hosted on IP 88.80.17.168, operated by PRQ, a Swedish 
+hosting provider historically associated with bulletproof hosting services 
+that tolerate abuse complaints. The hostname on the same IP — 
+portal-oficial-bombeiros-edital.shop — impersonates the Brazilian fire 
+department (Bombeiros), suggesting a coordinated campaign targeting 
+Brazilian government service impersonation across multiple domains.
 
----
-
-## 7. Attack Classification
-
-- **Type:** Credential Harvesting Phishing
-- **Technique:** Domain spoofing via typosquatting
-- **Target:** Microsoft account credentials
-- **Authentication Failures:** SPF, DKIM, DMARC all failed
-- **Impact:** Potential account compromise if user clicks link
+The .shop TLD and freshly registered domain are consistent with 
+disposable phishing infrastructure designed to evade blocklists before 
+being abandoned.
 
 ---
 
-## 8. Conclusion
+## 5. URL Analysis
 
-This is a confirmed phishing email. The sender spoofed Microsoft branding 
-using a typosquatted domain registered days before the campaign. All email 
-authentication mechanisms failed. The embedded link directs victims to a 
-credential harvesting page mimicking the Microsoft account login portal. 
-The originating IP has thousands of prior abuse reports confirming its 
-use in phishing infrastructure.
-
-The email did not bypass technical controls but represents a social 
-engineering risk if delivered to end users.
+- **Domain:** atendimento-fluxo-online.shop
+- **TLD:** .shop — commonly abused for phishing
+- **Translation:** "atendimento" = attendance/service, "fluxo" = flow, 
+  "online" = online — mimics a legitimate Brazilian customer service portal
+- **Redirection:** HTTP redirects to HTTPS version of same domain
+- **Last Modified:** March 26, 2026 — created one day before submission
 
 ---
 
-## 9. Recommendations
+## 6. Attack Classification
 
-- Block sender domain microsft-verify.com at email gateway
-- Block originating IP 185.220.101.45 at firewall level
-- Submit domain to Microsoft for phishing takedown
-- Alert end users via security awareness communication
-- Review email gateway rules for typosquat domain detection
-- Implement DMARC enforcement policy if not already active
-- Conduct phishing simulation training for staff
+- **Type:** Credential Harvesting / Social Engineering
+- **Target Region:** Brazil — Portuguese-speaking users
+- **Impersonation:** Brazilian government or official service portal
+- **Infrastructure:** Bulletproof hosting (PRQ, Sweden)
+- **Detection Rate:** Low (1/95) — actively evading most security vendors
+- **Status:** Live at time of analysis
 
 ---
 
-**Verdict:** Phishing Confirmed  
-**User Clicked Link:** No  
-**Escalation Required:** No — Blocked at gateway
+## 7. Conclusion
+
+This is a confirmed phishing site targeting Brazilian users by impersonating 
+an official government or customer service portal. The site was live at the 
+time of analysis with a low detection rate of 1/95 vendors, indicating 
+it was recently deployed and actively evading security tooling. The hosting 
+infrastructure on PRQ — a provider associated with bulletproof hosting — 
+and the related hostname impersonating the Brazilian fire department suggest 
+this is part of a broader coordinated phishing campaign targeting Brazilian 
+government service impersonation.
+
+---
+
+## 8. Recommendations
+
+- Block domain atendimento-fluxo-online.shop at DNS and web proxy level
+- Block IP 88.80.17.168 at firewall level
+- Report domain to ESET and other vendors for expanded detection
+- Submit to Google Safe Browsing and Microsoft SmartScreen for blocklisting
+- Monitor for related domains hosted on the same IP infrastructure
+- Alert users to verify URLs before entering personal information on 
+  any government service portal
+
+---
+
+**Verdict:** Confirmed Phishing Site  
+**Threat Level:** High  
+**Escalation Required:** No — site blocked at gateway level  
+**Analyst:** Michael Eziuzor | github.com/Eziuzor-SEC
